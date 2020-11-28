@@ -135,47 +135,6 @@
  }
 
 
-
-    // agregar producto a detalle temporal
- if ($_POST['action'] == 'CargarItemsFactu') {
-
-    if (empty($_POST['producto']) || empty($_POST['cantidad'])){
-
-        echo 'error';
-
-    }else {
-
-      $codigo = $_POST['producto'];
-      $cantidad = $_POST['cantidad'];
-
-
-      $token = md5($_SESSION['id']);
-
-      $query_detalle_temp = $base_de_datos->query("CALL add_detalle_temp ($codigo, $cantidad,'$token')");
-
-      $detalleTabla = '';
-      $total = 0;
-
-
-      if ($query_detalle_temp) {
-
-        $detalleTabla = $query_detalle_temp->fetchAll(PDO::FETCH_OBJ);
-
-
-        echo json_encode($detalleTabla);
-
-      }else {
-
-       echo 'error';
-     }
-
-
-  }
-
-   exit();
- }
-
-
 }?>
 
 
