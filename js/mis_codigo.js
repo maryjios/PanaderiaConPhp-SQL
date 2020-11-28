@@ -306,7 +306,7 @@ function agregar_fila(e){
 
 
 
-function cargar_items_factura(){
+/* function cargar_items_factura(){
 
   var producto = $('#cod_producto').val();
   var cantidad = $('#txt_cant_producto').val();
@@ -385,4 +385,4 @@ function cargar_items_factura(){
         }
       });
 
-}
+} */
