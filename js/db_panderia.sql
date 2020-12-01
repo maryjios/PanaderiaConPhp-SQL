@@ -148,3 +148,14 @@ DELIMITER ;
 
 
 -- ALTER TABLE panaderia.usuario ADD contrasena VARCHAR(170) NULL;
+
+-- PROCEDIMIENTO ELIMINAR ITEM
+DELIMITER //
+CREATE PROCEDURE eliminar_item_detalle(id_detalle int, token VARCHAR(50))
+BEGIN
+DELETE FROM detalle_temp WHERE correlativo = id_detalle;
+
+
+SELECT tmp.correlativo, tmp.codproducto, p.nombre, tmp.cantidad, tmp.precio_venta FROM detalle_temp tmp INNER JOIN producto p ON tmp.codproducto = p.id WHERE tmp.token_user = token;
+END; //
+DELIMITER //

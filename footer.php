@@ -1,5 +1,3 @@
-  <!-- container-scroller -->
-
   <!-- plugins:js -->
   <script src="vendors/base/vendor.bundle.base.js"></script>
   <!-- endinject -->
@@ -21,7 +19,25 @@
   <!-- Data table JS -->
 
   <script type="text/javascript" src="js/mis_codigo.js"></script>
-  
+  <script language="JavaScript">
+    function mueveReloj() {
+      momentoActual = new Date();
+
+      ciudad = "La Virginia, Risaralda";
+      hora = momentoActual.getHours();
+      minuto = momentoActual.getMinutes();
+      segundo = momentoActual.getSeconds();
+
+      horaImprimible = ciudad + " : " + hora + " : " + minuto + " : " + segundo
+
+      document.form_reloj.reloj.value = horaImprimible
+
+      //La función se tendrá que llamar así misma para que sea dinámica, 
+      //de esta forma:
+
+      setTimeout(mueveReloj, 1000)
+    }
+  </script>
 
 </body>
 

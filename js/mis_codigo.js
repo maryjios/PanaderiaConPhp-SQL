@@ -19,12 +19,11 @@ function iniciar() {
 
 
   // cargar factura de usuario logeado
-  cargar_items_factura();
+  // cargar_items_factura();
 
 }
 
-
-function crear_cliente(e){
+function crear_cliente(e) {
 
   e.preventDefault();
 
@@ -40,7 +39,7 @@ function crear_cliente(e){
 }
 
 
-function buscar_cliente(){
+function buscar_cliente() {
 
 
   var el_cliente = $(this).val();
@@ -50,10 +49,13 @@ function buscar_cliente(){
 
     url: 'factura.php',
     type: "POST",
-    async : true,
-    data: {action:action,cliente:el_cliente},
+    async: true,
+    data: {
+      action: action,
+      cliente: el_cliente
+    },
 
-    success: function(resultado){
+    success: function (resultado) {
 
 
       if (resultado == 0) {
@@ -67,7 +69,7 @@ function buscar_cliente(){
         $('.btn_new_cliente').slideDown();
         $('#agregar_cliente').show();
 
-      }else{
+      } else {
 
         var data = $.parseJSON(resultado);
         $('#id_cliente').val(data.id);
@@ -81,16 +83,16 @@ function buscar_cliente(){
         $('#agregar_cliente').hide();
 
 
-        $('#nom_cliente').attr('disabled','disabled');
-        $('#tel_cliente').attr('disabled','disabled');
-        $('#dir_cliente').attr('disabled','disabled');
-        $('#email_cliente').attr('disabled','disabled');
+        $('#nom_cliente').attr('disabled', 'disabled');
+        $('#tel_cliente').attr('disabled', 'disabled');
+        $('#dir_cliente').attr('disabled', 'disabled');
+        $('#email_cliente').attr('disabled', 'disabled');
 
       }
 
     },
 
-    error: function(error){
+    error: function (error) {
 
     }
 
@@ -100,7 +102,7 @@ function buscar_cliente(){
 }
 
 
-function buscar_producto(e){
+function buscar_producto(e) {
 
   e.preventDefault();
 
@@ -113,16 +115,19 @@ function buscar_producto(e){
 
     url: 'factura.php',
     type: "POST",
-    async : true,
-    data: {action:action,producto:el_producto},
+    async: true,
+    data: {
+      action: action,
+      producto: el_producto
+    },
 
-    success: function(resultado){
+    success: function (resultado) {
 
 
       if (resultado != 0) {
 
         var info = $.parseJSON(resultado);
-        $('#txt_descripcion').html(info.descripcion);
+        $('#txt_descripcion').html(info.nombre);
         $('#txt_existencia').html(info.cantidad);
         $('#txt_cant_producto').val('1');
         $('#txt_precio').html(info.precio);
@@ -133,9 +138,9 @@ function buscar_producto(e){
         $('#agregar_a_factura').show();
 
 
-        
 
-      }else{
+
+      } else {
 
 
         $('#agregar_a_factura').hide();
@@ -145,24 +150,23 @@ function buscar_producto(e){
         $('#txt_cant_producto').val('');
         $('#txt_precio').html('');
         $('#txt_precio_total').html('');
-        $('#txt_cant_producto').attr('disabled','disabled');
+        $('#txt_cant_producto').attr('disabled', 'disabled');
 
       }
 
     },
 
-    error: function(error){
+    error: function (error) {
 
     }
 
   });
 
-
 }
 
 
 // Validar cantidad y realizar cambios en valor total
-function cant_cambiada(e){
+function cant_cambiada(e) {
 
   e.preventDefault();
 
@@ -172,9 +176,9 @@ function cant_cambiada(e){
 
   $("#txt_precio_total").html(totalcito);
 
-  if ($(this).val() < 1 || isNaN($(this).val()) || $(this).val() > stock ) {
+  if ($(this).val() < 1 || isNaN($(this).val()) || $(this).val() > stock) {
     $('#agregar_a_factura').hide();
-  }else{
+  } else {
 
     $('#agregar_a_factura').show();
 
@@ -185,7 +189,7 @@ function cant_cambiada(e){
 }
 
 
-function nuevo_cliente(e){
+function nuevo_cliente(e) {
 
   e.preventDefault();
 
@@ -193,15 +197,15 @@ function nuevo_cliente(e){
 
     url: 'factura.php',
     type: "POST",
-    async : true,
+    async: true,
     data: $("#form_registrar_cliente").serialize(),
-    success: function(resultado){
+    success: function (resultado) {
       if (resultado != 'error') {
 
-        $('#nom_cliente').attr('disabled','disabled');
-        $('#tel_cliente').attr('disabled','disabled');
-        $('#dir_cliente').attr('disabled','disabled');
-        $('#email_cliente').attr('disabled','disabled');
+        $('#nom_cliente').attr('disabled', 'disabled');
+        $('#tel_cliente').attr('disabled', 'disabled');
+        $('#dir_cliente').attr('disabled', 'disabled');
+        $('#email_cliente').attr('disabled', 'disabled');
 
         //oculta boton agregar
         $('.btn_new_cliente').slideUp();
@@ -211,7 +215,7 @@ function nuevo_cliente(e){
 
     },
 
-    error: function(error){
+    error: function (error) {
 
     }
 
@@ -220,7 +224,7 @@ function nuevo_cliente(e){
 
 }
 
-function agregar_fila(e){
+function agregar_fila(e) {
 
 
   e.preventDefault();
@@ -236,16 +240,16 @@ function agregar_fila(e){
 
     url: 'factura.php',
     type: "POST",
-    async : true,
+    async: true,
     data: {
 
-      action:action,
-      producto:producto,
-      cantidad:cantidad
+      action: action,
+      producto: producto,
+      cantidad: cantidad
 
     },
 
-    success: function(info) {
+    success: function (info) {
 
       var acum = 0;
       var datos = '';
@@ -257,132 +261,167 @@ function agregar_fila(e){
 
         for (var i = 0; i < resultado.length; i++) {
 
+          datos += '<tr style="width:130%; height:150%;">';
+          datos += '<input class="codProducto1" type="hidden" value="' + resultado[i].correlativo + '">';
+          datos += '<td class="codProducto">' + resultado[i].codproducto + '</td>';
+          datos += '<td class="nomProducto">' + resultado[i].nombre + '</td>';
+          datos += '<td class="cantidadProducto">' + resultado[i].cantidad + '</td>';
+          datos += '<td class="precio_ventaProducto">' + resultado[i].precio_venta + '</td>';
+          datos += '<td>' + resultado[i].precio_venta * resultado[i].cantidad + '</td>';
+          datos += "<td><button type='button' class='btn btn-danger eliminar'>Eliminar</button></td>";
+          datos += '<input type="hidden" class="idItemDetalle">' + resultado[i].correlativo + '</td>';
+          datos += '</tr>';
 
-         datos +='<tr style="width:130%; height:150%;">';
-         datos +='<td>'+ resultado[i].codproducto +'</td>';
-         datos +='<td>'+ resultado[i].nombre +'</td>';
-         datos +='<td>'+ resultado[i].cantidad +'</td>';
-         datos +='<td>'+ resultado[i].precio_venta +'</td>';
-         datos +='<td>'+ resultado[i].precio_venta * resultado[i].cantidad +'</td>';
-         datos +='<td><button class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></button></td>';
-         datos +='</tr>';
+          acum += resultado[i].precio_venta * resultado[i].cantidad;
 
-         acum += resultado[i].precio_venta * resultado[i].cantidad;
 
-       }
+        }
 
-       $('#detalle_venta').html(datos);
 
-       detalleTotal +='<tr>';
-       detalleTotal +='<td></td>';
-       detalleTotal +='<td></td>';
-       detalleTotal +='<td></td>';
-       detalleTotal +='<td class="textright">Iva</td>';
-       detalleTotal +='<td class="textright">'+ acum * 0.19 +'</td>';
-       detalleTotal +='</tr>';
-       detalleTotal +='<tr>';
-       detalleTotal +='<td></td>';
-       detalleTotal +='<td></td>';
-       detalleTotal +='<td></td>';
-       detalleTotal +='<td class="textright">Total:</td>';
-       detalleTotal +='<td class="textright">' + acum +'</td>';
-       detalleTotal +='</tr>';
+        $('#detalle_venta').html(datos);
 
-       $('#detalle_totales').html(detalleTotal);
+        var iva = acum * 0.19;
+        var subtotal = acum - iva;
 
-                // Ocultar boton agregar
-                $('#add_product_venta').slideUp();
 
-              }else {
-                console.log('No hay dato');
-              }
-            },
-            error: function(error) {
+        detalleTotal += '<tr>';
+        detalleTotal += '<td></td>';
+        detalleTotal += '<td></td>';
+        detalleTotal += '<td></td>';
+        detalleTotal += '<td class="textright">Subtotal:</td>';
+        detalleTotal += '<td class="textright"><h5 class="mr-2 mb-0">$' + subtotal + '</h5></td>';
+        detalleTotal += '</tr>';
+        detalleTotal += '<tr>';
+        detalleTotal += '<td></td>';
+        detalleTotal += '<td></td>';
+        detalleTotal += '<td></td>';
+        detalleTotal += '<td class="textright">Iva</td>';
+        detalleTotal += '<td class="textright"><h5 class="mr-2 mb-0">$' + iva + '</h5></td>';
+        detalleTotal += '</tr>';
+        detalleTotal += '<tr>';
+        detalleTotal += '<td></td>';
+        detalleTotal += '<td></td>';
+        detalleTotal += '<td></td>';
+        detalleTotal += '<td class="textright">Total:</td>';
+        detalleTotal += '<td class="textright"><h5 class="mr-2 mb-0">$' + acum + '</h5></td>';
+        detalleTotal += '</tr>';
 
-            }
-          });
+        $('#detalle_totales').html(detalleTotal);
+
+        // Ocultar boton agregar
+        $('#add_product_venta').slideUp();
+
+      } else {
+        console.log('No hay dato');
+      }
+
+      $(".eliminar").click(eliminarItem);
+    },
+    error: function (error) {
+
+    }
+  });
 
 }
 
 
+function eliminarItem(e) {
 
-/* function cargar_items_factura(){
+  e.preventDefault();
 
-  var producto = $('#cod_producto').val();
-  var cantidad = $('#txt_cant_producto').val();
+  $(this).parents("tr").attr("id", "por_eliminar");
 
+  var item = $(this).parents("tr").find(".codProducto1").val();
 
-  var action = 'CargarItemsFactu';
+  var action = 'EliminarItemTabla';
 
   $.ajax({
 
     url: 'factura.php',
     type: "POST",
-    async : true,
+    async: true,
     data: {
 
-      action:action,
-      producto:producto,
-      cantidad:cantidad
+      action: action,
+      item: item
 
 
     },
 
-    success: function(resultado) {
-
+    success: function (info) {
       var acum = 0;
-      var datosInici = '';
-      var detalleTotalInicio = '';
+      var datos = '';
+      var detalleTotal = '';
 
-      if (resultado != 'error') {
+      if (info != 'error') {
 
         var resultado = $.parseJSON(info);
 
         for (var i = 0; i < resultado.length; i++) {
 
+          datos += '<tr style="width:130%; height:150%;">';
+          datos += '<input class="codProducto1" type="hidden" value="' + resultado[i].correlativo + '">';
+          datos += '<td class="codProducto">' + resultado[i].codproducto + '</td>';
+          datos += '<td class="nomProducto">' + resultado[i].nombre + '</td>';
+          datos += '<td class="cantidadProducto">' + resultado[i].cantidad + '</td>';
+          datos += '<td class="precio_ventaProducto">' + resultado[i].precio_venta + '</td>';
+          datos += '<td>' + resultado[i].precio_venta * resultado[i].cantidad + '</td>';
+          datos += "<td><button type='button' class='btn btn-danger eliminar'>Eliminar</button></td>";
+          datos += '<input type="hidden" class="idItemDetalle">' + resultado[i].correlativo + '</td>';
+          datos += '</tr>';
 
-         datosInici +='<tr style="width:130%; height:150%;">';
-         datosInici +='<td>'+ resultado[i].codproducto +'</td>';
-         datosInici +='<td>'+ resultado[i].nombre +'</td>';
-         datosInici +='<td>'+ resultado[i].cantidad +'</td>';
-         datosInici +='<td>'+ resultado[i].precio_venta +'</td>';
-         datosInici +='<td>'+ resultado[i].precio_venta * resultado[i].cantidad +'</td>';
-         datosInici +='<td><button class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></button></td>';
-         datosInici +='</tr>';
+          acum += resultado[i].precio_venta * resultado[i].cantidad;
 
-         acum += resultado[i].precio_venta * resultado[i].cantidad;
-
-       }
-
-       $('#detalle_venta').html(datosInici);
-
-       detalleTotalInicio +='<tr>';
-       detalleTotalInicio +='<td></td>';
-       detalleTotalInicio +='<td></td>';
-       detalleTotalInicio +='<td></td>';
-       detalleTotalInicio +='<td class="textright">Iva</td>';
-       detalleTotalInicio +='<td class="textright">'+ acum * 0.19 +'</td>';
-       detalleTotalInicio +='</tr>';
-       detalleTotalInicio +='<tr>';
-       detalleTotalInicio +='<td></td>';
-       detalleTotalInicio +='<td></td>';
-       detalleTotalInicio +='<td></td>';
-       detalleTotalInicio +='<td class="textright">Total:</td>';
-       detalleTotalInicio +='<td class="textright">' + acum +'</td>';
-       detalleTotalInicio +='</tr>';
-
-       $('#detalle_totales').html(detalleTotalInicio);
-
-            // Ocultar boton agregar
-            $('#add_product_venta').slideUp();
-
-          }else {
-            console.log('No hay dato');
-          }
-        },
-        error: function(error) {
 
         }
-      });
 
-} */
+
+        $('#detalle_venta').html(datos);
+
+        var iva = acum * 0.19;
+        var subtotal = acum - iva;
+
+
+        detalleTotal += '<tr>';
+        detalleTotal += '<td></td>';
+        detalleTotal += '<td></td>';
+        detalleTotal += '<td></td>';
+        detalleTotal += '<td class="textright">Subtotal:</td>';
+        detalleTotal += '<td class="textright"><h5 class="mr-2 mb-0">$' + subtotal + '</h5></td>';
+        detalleTotal += '</tr>';
+        detalleTotal += '<tr>';
+        detalleTotal += '<td></td>';
+        detalleTotal += '<td></td>';
+        detalleTotal += '<td></td>';
+        detalleTotal += '<td class="textright">Iva:</td>';
+        detalleTotal += '<td class="textright"><h5 class="mr-2 mb-0">$' + iva + '</h5></td>';
+        detalleTotal += '</tr>';
+        detalleTotal += '<tr>';
+        detalleTotal += '<td></td>';
+        detalleTotal += '<td></td>';
+        detalleTotal += '<td></td>';
+        detalleTotal += '<td class="textright">Total:</td>';
+        detalleTotal += '<td class="textright"><h5 class="mr-2 mb-0">$' + acum + '</h5></td>';
+        detalleTotal += '</tr>';
+
+        $('#detalle_totales').html(detalleTotal);
+
+
+        // Ocultar boton agregar
+        $('#add_product_venta').slideUp();
+
+
+      } else {
+        console.log('No hay dato');
+
+      }
+
+      $(".eliminar").click(eliminarItem);
+
+
+    }
+  });
+
+
+
+}
