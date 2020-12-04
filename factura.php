@@ -316,7 +316,7 @@
 
                            <!-- ------------ -->
                            <div class="table-responsive">
-                             <table class="table table-hover table_items">
+                             <table class="table table-hover table_items" id="detalle_factura">
                                <thead>
                                  <tr>
                                    <th class="th">Código</th>
