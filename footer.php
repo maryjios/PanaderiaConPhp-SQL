@@ -23,12 +23,12 @@
     function mueveReloj() {
       momentoActual = new Date();
 
-      ciudad = "La Virginia, Risaralda";
+
       hora = momentoActual.getHours();
       minuto = momentoActual.getMinutes();
       segundo = momentoActual.getSeconds();
 
-      horaImprimible = ciudad + " : " + hora + " : " + minuto + " : " + segundo
+      horaImprimible = hora + " : " + minuto + " : " + segundo
 
       document.form_reloj.reloj.value = horaImprimible
 

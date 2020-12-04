@@ -17,8 +17,10 @@ function iniciar() {
   // boton agregar item a factura
   $("#agregar_a_factura").click(agregar_fila);
 
-  $("#generarFactura").click(generarFactu)
+  $("#generarFactura").slideUp();
+  $("#generarFactura").click(generarFactu);
 
+  $(".btnFacturaRegistrar").click(cerrarModal);
   // cargar factura de usuario logeado
   // cargar_items_factura();
 
@@ -48,7 +50,7 @@ function buscar_cliente() {
 
   $.ajax({
 
-    url: 'factura.php',
+    url: 'nueva_factura.php',
     type: "POST",
     async: true,
     data: {
@@ -69,6 +71,8 @@ function buscar_cliente() {
         // // Ocultarndo boton agregar cliente
         $('.btn_new_cliente').slideDown();
         $('#agregar_cliente').show();
+        $("#generarFactura").slideUp();
+
 
       } else {
 
@@ -88,6 +92,8 @@ function buscar_cliente() {
         $('#tel_cliente').attr('disabled', 'disabled');
         $('#dir_cliente').attr('disabled', 'disabled');
         $('#email_cliente').attr('disabled', 'disabled');
+        $("#generarFactura").show();
+
 
       }
 
@@ -114,7 +120,7 @@ function buscar_producto(e) {
 
   $.ajax({
 
-    url: 'factura.php',
+    url: 'nueva_factura.php',
     type: "POST",
     async: true,
     data: {
@@ -196,7 +202,7 @@ function nuevo_cliente(e) {
 
   $.ajax({
 
-    url: 'factura.php',
+    url: 'nueva_factura.php',
     type: "POST",
     async: true,
     data: $("#form_registrar_cliente").serialize(),
@@ -239,7 +245,7 @@ function agregar_fila(e) {
 
   $.ajax({
 
-    url: 'factura.php',
+    url: 'nueva_factura.php',
     type: "POST",
     async: true,
     data: {
@@ -269,7 +275,7 @@ function agregar_fila(e) {
           datos += '<td class="cantidadProducto">' + resultado[i].cantidad + '</td>';
           datos += '<td class="precio_ventaProducto">' + resultado[i].precio_venta + '</td>';
           datos += '<td>' + resultado[i].precio_venta * resultado[i].cantidad + '</td>';
-          datos += "<td><button type='button' class='btn btn-danger eliminar'>Eliminar</button></td>";
+          datos += "<td><button type='button' class='btn btn-danger btn-sm eliminar'><i class='mdi mdi-delete'></i></button></td>";
           datos += '<input type="hidden" class="idItemDetalle">' + resultado[i].correlativo + '</td>';
           datos += '</tr>';
 
@@ -280,6 +286,17 @@ function agregar_fila(e) {
 
 
         $('#detalle_venta').html(datos);
+
+        $('#txt_precio').html("0.00");
+        $('#txt_precio_total').html("0.00");
+        $('#txt_cant_producto').val("0");
+        $('#cod_producto').val("");
+        $('#txt_descripcion').text("-");
+        $('#txt_existencia').text("-");
+
+
+
+
 
         var iva = acum * 0.19;
         var subtotal = acum - iva;
@@ -338,7 +355,7 @@ function eliminarItem(e) {
 
   $.ajax({
 
-    url: 'factura.php',
+    url: 'nueva_factura.php',
     type: "POST",
     async: true,
     data: {
@@ -367,7 +384,7 @@ function eliminarItem(e) {
           datos += '<td class="cantidadProducto">' + resultado[i].cantidad + '</td>';
           datos += '<td class="precio_ventaProducto">' + resultado[i].precio_venta + '</td>';
           datos += '<td>' + resultado[i].precio_venta * resultado[i].cantidad + '</td>';
-          datos += "<td><button type='button' class='btn btn-danger eliminar'>Eliminar</button></td>";
+          datos += "<td><button type='button' class='btn btn-danger btn-sm eliminar'><i class='mdi mdi-delete'></i></button></td>";
           datos += '<input type="hidden" class="idItemDetalle">' + resultado[i].correlativo + '</td>';
           datos += '</tr>';
 
@@ -422,41 +439,46 @@ function generarFactu(e) {
 
   e.preventDefault();
 
-  var items = $('#detalle_venta tr').length;
 
-  if (items > 0) {
 
-    var action = "GenerarFactura";
+    var items = $('#detalle_venta tr').length;
 
-    var cliente = $('#id_cliente').val();
+    if (items > 0) {
 
-    $.ajax({
+      var action = "GenerarFactura";
 
-      url: 'factura.php',
-      type: "POST",
-      async: true,
-      data: {
+      var cliente = $('#id_cliente').val();
 
-        action: action,
-        cliente: cliente
 
-      },
+      $.ajax({
 
-      success: function (respuesta) {
+        url: 'nueva_factura.php',
+        type: "POST",
+        async: true,
+        data: {
 
-        if (respuesta != "false") {
-          console.log(respuesta);
-          $("#modalFacturaExitosa").show();
-          $("#detalle_venta").empty();
+          action: action,
+          cliente: cliente
 
+        },
+
+        success: function (respuesta) {
+
+          if (respuesta != "false") {
+            console.log(respuesta);
+            $("#modalFacturaExitosa").modal("show");
+            
+          }
 
         }
 
-      }
+      });
 
-    });
+    } 
+}
 
-  }
+function cerrarModal(){
 
+  location.reload();
 
 }

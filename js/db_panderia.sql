@@ -162,27 +162,28 @@ DELIMITER //
 
 
 
--- DELIMITER //
--- CREATE PROCEDURE eliminar_item_detalle(cliente VARCHAR(10), vendedor VARCHAR(10), token VARCHAR(50))
--- BEGIN
--- DECLARE num_factu INT;
--- num_factu = (SELECT MAX(codigo)+1 AS numero_factura FROM factura);
+DELIMITER //
+CREATE PROCEDURE eliminar_item_detalle(cliente VARCHAR(10), vendedor VARCHAR(10), token VARCHAR(50))
+BEGIN
+	DECLARE @nFactu TABLE(codFactu int);
+	INSERT INTO @nFactu(codFactu) SELECT MAX(codigo)+1 AS numero_factura FROM factura
+	SELECT * FROM @nFactu
 
 
--- INSERT INTO factura (id_cliente, id_vendedor, NOW(), SELECT SUM(precio_venta * cantidad) AS total FROM detalle_temp WHERE token_user = '60090739082127c6196982db445f6964', 'activo') 
--- ) 
--- SELECT codproducto, cantidad, cantidad * precio_venta 
--- FROM detalle_temp 
--- WHERE token_user = token
+INSERT INTO factura (id_cliente, id_vendedor, NOW(), SELECT SUM(precio_venta * cantidad) AS total FROM detalle_temp WHERE token_user = '60090739082127c6196982db445f6964', 'activo') 
+) 
+SELECT codproducto, cantidad, cantidad * precio_venta 
+FROM detalle_temp 
+WHERE token_user = token
 
 
--- INSERT INTO item_factura (num_factu, codproducto, cantidad, subtotal) 
--- VALUES(num_factu, SELECT codproducto, cantidad, cantidad * precio_venta) 
--- FROM detalle_temp 
--- WHERE token_user = token
--- SELECT tmp.correlativo, tmp.codproducto, p.nombre, tmp.cantidad, tmp.precio_venta FROM detalle_temp tmp INNER JOIN producto p ON tmp.codproducto = p.id WHERE tmp.token_user = token;
--- END; //
--- DELIMITER //
+INSERT INTO item_factura (num_factu, codproducto, cantidad, subtotal) 
+VALUES(num_factu, SELECT codproducto, cantidad, cantidad * precio_venta) 
+FROM detalle_temp 
+WHERE token_user = token
+SELECT tmp.correlativo, tmp.codproducto, p.nombre, tmp.cantidad, tmp.precio_venta FROM detalle_temp tmp INNER JOIN producto p ON tmp.codproducto = p.id WHERE tmp.token_user = token;
+END; //
+DELIMITER //
 
 
  
