@@ -3,8 +3,8 @@
     $tittle = "Nueva Factura";
     include_once "Conexion.php";
 
-    session_start();
     if (!empty($_POST)) {
+      session_start();
 
       if ($_POST['action'] == 'BuscarCliente') {
 
@@ -41,8 +41,6 @@
 
         // $cliente = $_POST['action'];
         $consulta = $base_de_datos->prepare("INSERT INTO cliente(id, nombre, telefono, direccion, correo) VALUES(:id, :nom, :tel, :direc, :email)");
-
-
 
         $consulta->bindParam(':id', $id);
         $consulta->bindParam(':nom', $nombre);
@@ -139,13 +137,90 @@
 
 
             echo json_encode($detalleTabla2, JSON_UNESCAPED_UNICODE);
-            
           } else {
 
             echo 'error';
           }
         }
         exit;
+      }
+
+      if ($_POST['action'] == 'GenerarFactura') {
+
+        if (!empty($_POST['cliente'])) {
+
+          $acum_total = 0;
+
+          $cliente = $_POST['cliente'];
+
+          $vendedor = $_SESSION['id'];
+
+          $token = md5($_SESSION['id']);
+
+
+          $query = $base_de_datos->query("SELECT correlativo, codproducto, cantidad, precio_venta FROM detalle_temp WHERE token_user = '$token'; ");
+
+
+          $mensaje = "";
+          if ($query) {
+
+            $num_factu = $base_de_datos->query("SELECT MAX(codigo)+1 AS numero_factura FROM factura");
+
+            $query = $base_de_datos->query("SELECT * FROM detalle_temp WHERE token_user = '$token'");
+
+            $num_factu = $num_factu->fetch(PDO::FETCH_ASSOC);
+            if ($num_factu) {
+              $n_factura = $num_factu['numero_factura'];
+            }
+
+            $query_total = $base_de_datos->query("SELECT SUM(cantidad*precio_venta) AS totalcito FROM detalle_temp WHERE token_user  = '$token'; ");
+
+            $query_total = $query_total->fetch(PDO::FETCH_ASSOC);
+            if ($query_total) {
+              $total = $query_total['totalcito'];
+            }
+
+            date_default_timezone_set('America/Bogota');
+            $fechayhora = date("Y-m-d H:i:s");
+
+
+            $consulta = $base_de_datos->prepare("INSERT INTO factura(codigo, id_cliente, id_vendedor, fecha, total, estado_factura) VALUES(:num_factu, :cliente, :vendedor, :fecha, :total, :estado)");
+
+            $consulta->bindParam(':num_factu', $n_factura);
+            $consulta->bindParam(':cliente', $cliente);
+            $consulta->bindParam(':vendedor', $vendedor);
+            $consulta->bindParam(':fecha', $fechayhora);
+            $consulta->bindParam(':total', $total);
+            $estado = 'Activa';
+            $consulta->bindParam(':estado', $estado);
+
+
+            $resultado = $consulta->execute();
+
+            if ($resultado) {
+              while ($datos = $query->fetch()) {
+
+                $correlativo = $datos['correlativo'];
+                $producto = $datos['codproducto'];
+                $cantidad = $datos['cantidad'];
+                $subtotal = $datos['cantidad'] * $datos['precio_venta'];
+
+
+                $insert_item_factura = $base_de_datos->query("INSERT INTO item_factura(cod_factura, id_producto, cantidad, subtotal, estado_factura) VALUES('$n_factura', '$producto', '$cantidad', '$subtotal', 'Activa')");
+
+                if ($insert_item_factura) {
+                  $delete_item = $base_de_datos->query("DELETE FROM detalle_temp WHERE correlativo  = '$correlativo'; ");
+                }
+              }
+            }
+            $mensaje =  "true";
+          }
+          echo json_encode($mensaje, JSON_UNESCAPED_UNICODE);
+
+        } else {
+
+          $mensaje = "false";
+        }
       }
     } ?>
 
@@ -168,15 +243,6 @@
                    <div class="row">
                      <div class="col-lg-12">
                        <div class="form-group">
-                         <?php
-                          $query = $base_de_datos->prepare("SELECT * FROM cliente");
-                          $query->execute();
-
-                          $resultado = $query->rowCount();
-                          if ($resultado > 0) {
-                            $data = $query->fetchAll(PDO::FETCH_OBJ);
-                          }
-                          ?>
                          <a href="#" class="btn btn-primary btn_new_cliente"><i class="fas fa-user-plus"></i> Nuevo Cliente</a>
                        </div>
                        <div class="card">
@@ -253,7 +319,7 @@
                              <table class="table table-hover table_items">
                                <thead>
                                  <tr>
-                                   <th class="th" width="100px">Código</th>
+                                   <th class="th">Código</th>
                                    <th class="th">Producto.</th>
                                    <th class="th">Stock</th>
                                    <th class="th">Cantidad</th>
@@ -265,7 +331,7 @@
                                    <td><input type="number" name="cod_producto" id="cod_producto" class="cod_producto"></td>
                                    <td id="txt_descripcion">-</td>
                                    <td id="txt_existencia">-</td>
-                                   <td><input class="input_cant" type="text" name="txt_cant_producto" id="txt_cant_producto" value="0" min="1" disabled></td>
+                                   <td><input size="4" type="text" name="txt_cant_producto" id="txt_cant_producto" value="0" min="1" disabled></td>
                                    <td id="txt_precio" class="textright">0.00</td>
                                    <td id="txt_precio_total" class="txtright">0.00</td>
                                    <td><a href="#" id="agregar_a_factura" class="btn btn-dark">Agregar</a></td>
@@ -297,7 +363,7 @@
                            <!-- Boton generar factura de venta -->
                            <hr>
                            <div class="container my-3 mr-5">
-                             <button class="btn btn-success float-right">Generar Factura</button>
+                             <button class="btn btn-success float-right" id="generarFactura">Generar Factura</button>
                            </div>
                          </div>
                        </div>
@@ -315,13 +381,42 @@
        </div>
      </div>
      </div>
+
+
+     <!-- Modal proceso generar factura exitoso -->
+
+     <div class="modal fade" id="modalFacturaExitosa" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+       <div class="modal-dialog modal-notify modal-success" role="document">
+         <!--Content-->
+         <div class="modal-content">
+           <!--Header-->
+           <div class="modal-header">
+             <p class="heading lead">FACTURA REGISTRADA</p>
+
+             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true" class="white-text">&times;</span>
+             </button>
+           </div>
+
+           <!--Body-->
+           <div class="modal-body">
+             <div class="text-center">
+               <i class="fas fa-check fa-4x mb-3 animated rotateIn"></i>
+               <p>Factura generada con exito</p>
+             </div>
+           </div>
+
+           <!--Footer-->
+           <div class="modal-footer justify-content-center">
+             <a type="button" class="btn btn-outline-success waves-effect" data-dismiss="modal">OK</a>
+           </div>
+         </div>
+         <!--/.Content-->
+       </div>
+     </div>
      <!-- content-wrapper ends -->
-
-
-     <?php include_once "footer.php"; ?>
-
-
-   <?php } else {
-
+   <?php
+      include_once "footer.php";
+    } else {
       header("Location: login.php");
     } ?>

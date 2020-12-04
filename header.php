@@ -4,36 +4,6 @@ include_once "funciones.php";
 
 session_start();
 
-
-if (!empty($_SESSION['nombre_u']) or !empty($_SESSION['user_name']) and !empty($_SESSION['id'])) {
-
-  $usu = $_SESSION['id'];
-
-  $consulta = $base_de_datos->query("SELECT * FROM permisos_users WHERE user = '$usu' ");
-
-  while ($permisos = $consulta->fetch()) {
-
-    if ($permisos['permiso'] == '101') {
-      $estado1001 = $permisos['estado_user'];
-    }
-
-    if ($permisos['permiso'] == '102') {
-      $estado1002 = $permisos['estado_user'];
-    }
-
-    if ($permisos['permiso'] == '103') {
-      $estado1003 = $permisos['estado_user'];
-    }
-
-    if ($permisos['permiso'] == '104') {
-      $estado1004 = $permisos['estado_user'];
-    }
-
-    if ($permisos['permiso'] == '105') {
-      $estado1005 = $permisos['estado_user'];
-    }
-  }
-
 ?>
 
   <!DOCTYPE html>
@@ -61,19 +31,50 @@ if (!empty($_SESSION['nombre_u']) or !empty($_SESSION['user_name']) and !empty($
     <!-- endinject -->
     <link rel="shortcut icon" href="images/favicon.png" />
 
-    <link rel="stylesheet" href="css/mis_estilos"/>
+    <link rel="stylesheet" href="css/mis_estilos.css"/>
 
   </head>
 
   <body onload="mueveReloj()">
 
+  
+<?php if (!empty($_SESSION['nombre_u']) or !empty($_SESSION['user_name']) and !empty($_SESSION['id'])) {
+
+$usu = $_SESSION['id'];
+
+$consulta = $base_de_datos->query("SELECT * FROM permisos_users WHERE user = '$usu' ");
+
+while ($permisos = $consulta->fetch()) {
+
+  if ($permisos['permiso'] == '101') {
+    $estado1001 = $permisos['estado_user'];
+  }
+
+  if ($permisos['permiso'] == '102') {
+    $estado1002 = $permisos['estado_user'];
+  }
+
+  if ($permisos['permiso'] == '103') {
+    $estado1003 = $permisos['estado_user'];
+  }
+
+  if ($permisos['permiso'] == '104') {
+    $estado1004 = $permisos['estado_user'];
+  }
+
+  if ($permisos['permiso'] == '105') {
+    $estado1005 = $permisos['estado_user'];
+  }
+}
+
+?>
     <?php
 
     date_default_timezone_set('America/Bogota');
+    $fechayhora = date("Y-m-d H:i:s");
 
     $fecha = date("Y-m-d");
 
-    $fechayhora = date("Y-m-d H:i:s");
     ?>
     <div class="container-scroller">
       <!-- partial:partials/_navbar.html -->
@@ -125,15 +126,14 @@ if (!empty($_SESSION['nombre_u']) or !empty($_SESSION['user_name']) and !empty($
                 <span class="nav-profile-name"><?php echo $_SESSION['nombre_u'] . " " . $_SESSION['apellido_u']; ?></span>
               </a>
               <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-                <?php if ($estado1001 == 'Habilitado') : ?>
+                <?php if ($estado1001 == 'Habilitado'){ ?>
 
                   <a class="dropdown-item" href="permisos.php">
                     <i class="mdi mdi-settings text-primary"></i>
                     Permisos
                   </a>
 
-                <?php endif ?>
-
+                <?php } ?>
                 <a class="dropdown-item" href="cerrar_sesion.php">
                   <i class="mdi mdi-logout text-primary"></i>
                   Cerrar Sesión
@@ -173,6 +173,12 @@ if (!empty($_SESSION['nombre_u']) or !empty($_SESSION['user_name']) and !empty($
               <a class="nav-link" href="productos.php">
                 <i class="fas fa-box menu-icon"></i>
                 <span class="menu-title">Productos</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="proveedores.php">
+                <i class="fas fa-user-tie menu-icon"></i>
+                <span class="menu-title">Proveedores</span>
               </a>
             </li>
             <?php if ($estado1001 == 'Habilitado') { ?>

@@ -6,7 +6,7 @@ function iniciar() {
   $('#registrar_cliente').hide();
 
 
-  $(".btn_new_cliente").on('click', crear_cliente);
+  $(".btn_new_cliente").click(crear_cliente);
   $("#id_cliente").keyup(buscar_cliente);
   $("#form_registrar_cliente").submit(nuevo_cliente);
 
@@ -15,8 +15,9 @@ function iniciar() {
 
 
   // boton agregar item a factura
-  $("#agregar_a_factura").on('click', agregar_fila);
+  $("#agregar_a_factura").click(agregar_fila);
 
+  $("#generarFactura").click(generarFactu)
 
   // cargar factura de usuario logeado
   // cargar_items_factura();
@@ -375,12 +376,10 @@ function eliminarItem(e) {
 
         }
 
-
         $('#detalle_venta').html(datos);
 
         var iva = acum * 0.19;
         var subtotal = acum - iva;
-
 
         detalleTotal += '<tr>';
         detalleTotal += '<td></td>';
@@ -410,18 +409,54 @@ function eliminarItem(e) {
         // Ocultar boton agregar
         $('#add_product_venta').slideUp();
 
-
-      } else {
-        console.log('No hay dato');
-
       }
 
       $(".eliminar").click(eliminarItem);
 
-
     }
   });
 
+}
+
+function generarFactu(e) {
+
+  e.preventDefault();
+
+  var items = $('#detalle_venta tr').length;
+
+  if (items > 0) {
+
+    var action = "GenerarFactura";
+
+    var cliente = $('#id_cliente').val();
+
+    $.ajax({
+
+      url: 'factura.php',
+      type: "POST",
+      async: true,
+      data: {
+
+        action: action,
+        cliente: cliente
+
+      },
+
+      success: function (respuesta) {
+
+        if (respuesta != "false") {
+          console.log(respuesta);
+          $("#modalFacturaExitosa").show();
+          $("#detalle_venta").empty();
+
+
+        }
+
+      }
+
+    });
+
+  }
 
 
 }

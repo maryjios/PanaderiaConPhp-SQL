@@ -8,8 +8,10 @@ include_once "header.php" ?>
     <div class="row">
       <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
+          <div class="card-header">
+            <h4>Productos</h4>
+          </div>
           <div class="card-body">
-            <h4 class="card-title">Usuarios</h4>
             <div align="right">
               <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#nuevo_producto">Agregar Nuevo <i class="mdi mdi-account-plus"></i></button>
             </div>
