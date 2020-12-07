@@ -50,7 +50,7 @@ function buscar_cliente() {
 
   $.ajax({
 
-    url: 'nueva_factura.php',
+    url: 'factura_controller.php',
     type: "POST",
     async: true,
     data: {
@@ -120,7 +120,7 @@ function buscar_producto(e) {
 
   $.ajax({
 
-    url: 'nueva_factura.php',
+    url: 'factura_controller.php',
     type: "POST",
     async: true,
     data: {
@@ -202,7 +202,7 @@ function nuevo_cliente(e) {
 
   $.ajax({
 
-    url: 'nueva_factura.php',
+    url: 'factura_controller.php',
     type: "POST",
     async: true,
     data: $("#form_registrar_cliente").serialize(),
@@ -219,10 +219,6 @@ function nuevo_cliente(e) {
         //oculta boton guardar
         $('#div_registro_cliente').slideUp();
       }
-
-    },
-
-    error: function (error) {
 
     }
 
@@ -245,7 +241,7 @@ function agregar_fila(e) {
 
   $.ajax({
 
-    url: 'nueva_factura.php',
+    url: 'factura_controller.php',
     type: "POST",
     async: true,
     data: {
@@ -334,9 +330,6 @@ function agregar_fila(e) {
       }
 
       $(".eliminar").click(eliminarItem);
-    },
-    error: function (error) {
-
     }
   });
 
@@ -355,7 +348,7 @@ function eliminarItem(e) {
 
   $.ajax({
 
-    url: 'nueva_factura.php',
+    url: 'factura_controller.php',
     type: "POST",
     async: true,
     data: {
@@ -452,7 +445,7 @@ function generarFactu(e) {
 
       $.ajax({
 
-        url: 'nueva_factura.php',
+        url: 'factura_controller.php',
         type: "POST",
         async: true,
         data: {

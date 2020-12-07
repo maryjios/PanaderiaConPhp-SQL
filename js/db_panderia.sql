@@ -149,6 +149,10 @@ DELIMITER ;
 
 -- ALTER TABLE panaderia.usuario ADD contrasena VARCHAR(170) NULL;
 
+-- ALTER TABLE Inscripcion
+
+-- ADD FOREIGN KEY (IdProfesor) REFERENCES Profesor(Id);
+
 -- PROCEDIMIENTO ELIMINAR ITEM
 DELIMITER //
 CREATE PROCEDURE eliminar_item_detalle(id_detalle int, token VARCHAR(50))
@@ -172,18 +176,5 @@ BEGIN
 
 INSERT INTO factura (id_cliente, id_vendedor, NOW(), SELECT SUM(precio_venta * cantidad) AS total FROM detalle_temp WHERE token_user = '60090739082127c6196982db445f6964', 'activo') 
 ) 
-SELECT codproducto, cantidad, cantidad * precio_venta 
-FROM detalle_temp 
-WHERE token_user = token
 
 
-INSERT INTO item_factura (num_factu, codproducto, cantidad, subtotal) 
-VALUES(num_factu, SELECT codproducto, cantidad, cantidad * precio_venta) 
-FROM detalle_temp 
-WHERE token_user = token
-SELECT tmp.correlativo, tmp.codproducto, p.nombre, tmp.cantidad, tmp.precio_venta FROM detalle_temp tmp INNER JOIN producto p ON tmp.codproducto = p.id WHERE tmp.token_user = token;
-END; //
-DELIMITER //
-
-
- 

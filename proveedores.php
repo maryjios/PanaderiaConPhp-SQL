@@ -55,12 +55,11 @@ include_once "header.php" ?>
                                         }
                                     } ?>
 
-                                    <tr>
+                                    <tr class="text-center">
                                         <th>#</th>
-                                        <th>Cedula</th>
                                         <th>Nombre</th>
                                         <th>Telefono</th>
-                                        <th>Direccion</th>
+                                        <th>Telefono 2</th>
                                         <th>Correo Electronico</th>
                                         <th>Acciones</th>
                                     </tr>
@@ -69,25 +68,22 @@ include_once "header.php" ?>
                                 <!-- Registrar Cliente -->
                                 <?php
                                 $mensaje = '';
-                                if (!empty($_POST['nombre']) and !empty($_POST['id']) and !empty($_POST['telefono'])) {
+                                if (!empty($_POST['nombre']) and !empty($_POST['telefono'])) {
 
-                                    $id = $_POST['id'];
                                     $nombre = $_POST['nombre'];
-                                    $apellido = $_POST['apellido'];
                                     $telefono = $_POST['telefono'];
-                                    $direccion = $_POST['direccion'];
+                                    $telefono2 = $_POST['telefono2'];
                                     $correo = $_POST['correo'];
 
 
 
-                                    $consulta = $base_de_datos->prepare("INSERT INTO cliente(id, nombre, telefono, direccion, correo) VALUES(:id, :nom, :tel, :direc, :email)");
+
+                                    $consulta = $base_de_datos->prepare("INSERT INTO proveedor(nombre, telefono, telefono2, correo) VALUES(:nom, :tel, :tel2, :email)");
 
 
-
-                                    $consulta->bindParam(':id', $id);
                                     $consulta->bindParam(':nom', $nombre);
                                     $consulta->bindParam(':tel', $telefono);
-                                    $consulta->bindParam(':direc', $direccion);
+                                    $consulta->bindParam(':tel2', $telefono2);
                                     $consulta->bindParam(':email', $correo);
 
                                     $resultado = $consulta->execute();
@@ -97,7 +93,7 @@ include_once "header.php" ?>
 
                                     <?php
                                     // Consultar Clientes
-                                    $consulta = $base_de_datos->query("SELECT * FROM cliente");
+                                    $consulta = $base_de_datos->query("SELECT * FROM proveedor");
                                     $contador = 0;
 
                                     while ($datos = $consulta->fetch()) {
@@ -105,16 +101,15 @@ include_once "header.php" ?>
                                         $id = $datos['id'];
                                         $nombre = $datos['nombre'];
                                         $telefono = $datos['telefono'];
-                                        $direccion = $datos['direccion'];
+                                        $telefono2 = $datos['telefono2'];
                                         $correo = $datos['correo'];
 
                                     ?>
                                         <tr>
                                             <td><?php echo $contador; ?></td>
-                                            <td><?php echo $id; ?></td>
                                             <td><?php echo $nombre; ?></td>
-                                            <td><?php echo $direccion; ?></td>
                                             <td><?php echo $telefono; ?></td>
+                                            <td><?php echo $telefono2; ?></td>
                                             <td><?php echo $correo; ?></td>
 
 
@@ -124,19 +119,19 @@ include_once "header.php" ?>
                                                     <div class="col-md-9 col-md-offset-9 col-xs-12 text-right">
                                                         <div class="btn-group" role="group">
 
-                                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editar_cliente<?php echo $datos['id']; ?>">
+                                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editar_proveedor<?php echo $datos['id']; ?>">
                                                                 <i class="fa fa-edit"></i>
                                                             </button>
 
 
-                                                            <button class="btn bg-danger text-white" type="button" data-toggle="modal" data-target="#eliminar_cliente<?php echo $datos['id']; ?>"><i class="mdi mdi-account-remove"></i></button>
+                                                            <button class="btn bg-danger text-white" type="button" data-toggle="modal" data-target="#eliminar_proveedor<?php echo $datos['id']; ?>"><i class="mdi mdi-account-remove"></i></button>
 
                                                         </div>
                                                     </div>
                                                 </div>
                                             </td>
                                             <!-- Modal editar cliente-->
-                                            <div class="modal fade" id="editar_cliente<?php echo $datos['id']; ?>" tabindex="-1" role="dialog" aria-labelledby="editar_producto" aria-hidden="true">
+                                            <div class="modal fade" id="editar_proveedor<?php echo $datos['id']; ?>" tabindex="-1" role="dialog" aria-labelledby="editar_proveedor" aria-hidden="true">
                                                 <form action="" method="POST">
                                                     <div class="modal-dialog" role="document">
                                                         <div class="modal-content">
@@ -148,10 +143,8 @@ include_once "header.php" ?>
                                                             </div>
                                                             <div class="modal-body">
 
-                                                                <div class="form-group">
-                                                                    <label for="id" class="form-control-label mb-1">Codigo:</label>
-                                                                    <input id="id" name="id_edit" type="number" class="form-control" aria-required="true" aria-invalid="false" readonly value="<?php echo $datos['id']; ?>">
-                                                                </div>
+
+                                                                <input id="id" name="id_edit" type="hidden" readonly value="<?php echo $datos['id']; ?>">
 
                                                                 <div class="form-group">
                                                                     <label for="nombre" class="form-control-label mb-1">Nombre:</label>
@@ -159,20 +152,20 @@ include_once "header.php" ?>
                                                                 </div>
 
                                                                 <div class="form-group">
-                                                                    <label for="direccion" class="form-control-label mb-1">Direccion:</label>
-                                                                    <input id="direccion" type="text" name="direccion_edit" min="1" step="1" class="form-control" aria-required="true" aria-invalid="false" value="<?php echo $datos['direccion']; ?>">
+                                                                    <label for="direccion" class="form-control-label mb-1">Telefono:</label>
+                                                                    <input id="direccion" type="text" name="telefono_edit" min="1" step="1" class="form-control" aria-required="true" aria-invalid="false" value="<?php echo $datos['telefono']; ?>">
                                                                 </div>
 
                                                                 <div class="form-group">
-                                                                    <label for="telefono" class="form-control-label mb-1">Telefono:</label>
-                                                                    <input id="telefono" type="text" name="telefono_edit" class="form-control" aria-required="true" aria-invalid="false" value="<?php echo $datos['telefono']; ?>">
+                                                                    <label for="telefono" class="form-control-label mb-1">Telefono 2:</label>
+                                                                    <input id="telefono" type="text" name="telefono2_edit" class="form-control" aria-required="true" aria-invalid="false" value="<?php echo $datos['telefono2']; ?>">
                                                                 </div>
 
                                                                 <div class="form-group">
                                                                     <label for="correo" class="form-control-label mb-1">Telefono:</label>
                                                                     <input id="correo" type="text" name="correo_edit" class="form-control" aria-required="true" aria-invalid="false" value="<?php echo $datos['correo']; ?>">
                                                                 </div>
-
+                                                           
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
@@ -210,13 +203,9 @@ include_once "header.php" ?>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group">
-                        <label for="id" class="form-control-label mb-1">Identificacion:</label>
-                        <input id="id" name="id" type="number" class="form-control" aria-required="true" aria-invalid="false">
-                    </div>
 
                     <div class="form-group">
-                        <label for="nombre" class="form-control-label mb-1">Nombre Completo:</label>
+                        <label for="nombre" class="form-control-label mb-1">Nombre:</label>
                         <input id="nombre" name="nombre" type="text" class="form-control" aria-required="true" aria-invalid="false">
                     </div>
 
@@ -226,14 +215,15 @@ include_once "header.php" ?>
                     </div>
 
                     <div class="form-group">
-                        <label for="direccion" class="form-control-label mb-1">Dirección:</label>
-                        <input id="direccion" name="direccion" type="text" class="form-control" aria-required="true" aria-invalid="false">
+                        <label for="direccion" class="form-control-label mb-1">Telefono 2:</label>
+                        <input id="direccion" name="telefono2" type="text" class="form-control" aria-required="true" aria-invalid="false">
                     </div>
 
                     <div class="form-group">
                         <label for="correo" class="form-control-label mb-1">Correo Electronico:</label>
                         <input id="correo" name="correo" type="email" class="form-control" aria-required="true" aria-invalid="false">
                     </div>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>

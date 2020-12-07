@@ -49,25 +49,23 @@ if ($estado1005 == 'Habilitado') { ?>
                         <td><?php echo $vendedor; ?></td>
                         <td><?php echo $fecha; ?></td>
                         <td><?php echo $total; ?></td>
-                        <?php if ($estado == 'Activa') { ?>
-                          <td>
+                        <td>
+                          <?php if ($estado == 'Activa') { ?>
 
                             <button type="button" class="btn btn-success btn-icon-text">
                               <i class="mdi mdi-check btn-icon-prepend"></i><?php echo $estado; ?>
                             </button>
-                          <td>
-                          <?php } else { ?>
 
-                          <td>
+                          <?php } else { ?>
 
                             <button type="button" class="btn btn-danger btn-icon-text">
                               <i class="mdi mdi-close btn-icon-prepend"></i><?php echo $estado; ?>
                             </button>
-                          <td>
 
                           <?php } ?>
+                        </td>
 
-
+                        <td>
                           <div class="row">
                             <div class="col-md-9 col-md-offset-9 col-xs-12 text-right">
                               <div class="btn-group" role="group">
@@ -84,7 +82,7 @@ if ($estado1005 == 'Habilitado') { ?>
                               </div>
                             </div>
                           </div>
-                          </td>
+                        </td>
                       </tr>
 
                       <!-- Modal editar permisos -->
@@ -125,11 +123,10 @@ if ($estado1005 == 'Habilitado') { ?>
                         </form>
                       </div>
 
-
                       <div class="modal fade bd-example-modal-lg" id="ver_factura<?php echo $codigo ?>" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-lg">
                           <div class="modal-content">
-                          <input type="hidden" name="permiso_edit" value="<?php echo $codigo ?>">
+                            <input type="hidden" name="permiso_edit" value="<?php echo $codigo ?>">
                             <?php
 
                             $query_items = $base_de_datos->query("SELECT * FROM item_factura WHERE cod_factura = '$codigo' ");
@@ -150,8 +147,6 @@ if ($estado1005 == 'Habilitado') { ?>
                           </div>
                         </div>
                       </div>
-
-                    
                     <?php } ?>
                   </tbody>
                 </table>

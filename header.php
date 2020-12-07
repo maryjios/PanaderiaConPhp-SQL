@@ -24,13 +24,16 @@ session_start();
   <!-- plugin css for this page -->
   <link rel="stylesheet" href="vendors/datatables.net-bs4/dataTables.bootstrap4.css">
   <!-- End plugin css for this page -->
+  <!-- inject:css -->
+  <link href="css/addons-pro/cards-extended.min.css" rel="stylesheet">
 
   <link rel="stylesheet" href="css/style.css">
 
   <!-- endinject -->
   <link rel="shortcut icon" href="images/favicon.png"/>
 
-  <link rel="stylesheet" href="css/mis_estilo.css"/>
+  <link rel="stylesheet" href="css/mis_estilos.css"/>
+  
 
 </head>
 
@@ -80,7 +83,7 @@ session_start();
     ?>
 
     ?>
-    <div class="container-scroller">
+    <div class="container-scroller" style="margin-top: -19px;">
       <!-- partial:partials/_navbar.html -->
       <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
         <div class="navbar-brand-wrapper d-flex justify-content-center">
@@ -97,9 +100,9 @@ session_start();
             <li class="nav-item dropdown mr-5">
               <form name="form_reloj" class="mt-3">
 
-                <div class="input-group ">
-                  <input class="text-black form-control-plaintext input-lg negrita" size="36" type="text" value="La Virginia, Risaralda / <?php echo $fechayhora.' /';?>">
-                  <input class="form-control-plaintext text-black negrita" type="text" id="reloj" readonly>
+                <div class="input-group row">
+                  <input class="text-black form-control-plaintext input-lg negrita col-md-8" size="49" type="text" value="La Virginia, Risaralda / <?php echo $fechayhora.' -';?>">
+                  <input class="form-control text-black negrita mt-2 text-center col-md-4 mr-5" style="height: 10px; width: 1em;" type="text" id="reloj" readonly>
                 </div>
 
               </form>
@@ -129,7 +132,7 @@ session_start();
             </li>
             <li class="nav-item nav-profile dropdown">
               <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-                <img src="images/faces/face5.jpg" alt="profile" />
+                <img src="images/foto_perfil.png" alt="profile" />
                 <span class="nav-profile-name"><?php echo $_SESSION['nombre_u'] . " " . $_SESSION['apellido_u']; ?></span>
               </a>
               <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">

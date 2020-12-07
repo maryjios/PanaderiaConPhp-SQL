@@ -38,6 +38,7 @@ include_once "header.php" ?>
 
                     $contador = 0;
 
+                    // Registrar usuarios
                     if (!empty($_POST['nombre']) and !empty($_POST['id']) and !empty($_POST['usuario']) and !empty($_POST['contrasena'])) {
 
                       $id = $_POST['id'];

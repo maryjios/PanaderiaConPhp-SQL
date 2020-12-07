@@ -1,5 +1,6 @@
 <?php
 
+include_once "factura_controller.php";
 $tittle = "Inicio";
 
 include_once "header.php" ?>
@@ -46,15 +47,22 @@ include_once "header.php" ?>
                   <a class="nav-link active" id="overview-tab" data-toggle="tab" href="#overview" role="tab" aria-controls="overview" aria-selected="true">Overview</a>
                 </li>
               </ul>
-              
+              <div class="row">
+
+
+              </div>
               <div class="tab-content py-0 px-0">
                 <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-tab">
                   <div class="d-flex flex-wrap justify-content-xl-between">
                     <div class="d-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
-                      <i class="mdi mdi-download mr-3 icon-lg text-warning"></i>
+                      <i class="mdi mdi-archive mr-3 icon-lg text-warning"></i>
                       <div class="d-flex flex-column justify-content-around">
-                        <small class="mb-1 text-muted">Facturas</small>
-                        <h5 class="mr-2 mb-0">2233783</h5>
+                        <?php
+                        $query_procutos = $base_de_datos->query("SELECT COUNT(id) AS productos FROM producto");
+                        if ($productos = $query_procutos->fetch()) { ?>
+                          <small class="mb-1 text-muted">PRODUCTOS</small>
+                          <h5 class="mr-2 mb-0 text-center"><?php echo $productos['productos']; ?></h5>
+                        <?php } ?>
                       </div>
                     </div>
                     <div class="d-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
@@ -83,10 +91,10 @@ include_once "header.php" ?>
                       <i class="mdi mdi-account mr-3 icon-lg text-danger"></i>
                       <div class="d-flex flex-column justify-content-around">
                         <?php
-                        $query_procutos = $base_de_datos->query("SELECT COUNT(id) AS productos FROM producto");
-                        if ($productos = $query_procutos->fetch()) { ?>
-                          <small class="mb-1 text-muted">CLIENTES</small>
-                          <h5 class="mr-2 mb-0 text-center"><?php echo $productos['productos']; ?></h5>
+                        $query_usuarios = $base_de_datos->query("SELECT COUNT(id) AS usuarios FROM usuario");
+                        if ($usuarios = $query_usuarios->fetch()) { ?>
+                          <small class="mb-1 text-muted">USUARIOS</small>
+                          <h5 class="mr-2 mb-0 text-center"><?php echo $usuarios['usuarios']; ?></h5>
                         <?php } ?>
                       </div>
                     </div>
@@ -99,14 +107,79 @@ include_once "header.php" ?>
       </div>
       <div class="row">
         <div class="col-md-7 grid-margin stretch-card">
-          <div class="card">
-            <div class="card-body">
-              <p class="card-title">Cash deposits</p>
-              <p class="mb-4">To start a blog, think of a topic about and first brainstorm party is ways to write details</p>
-              <div id="cash-deposits-chart-legend" class="d-flex justify-content-center pt-3"></div>
-              <canvas id="cash-deposits-chart"></canvas>
+          <!-- Card -->
+          <div class="card map-card">
+
+            <!--Google map-->
+            <div id="map-container-google-1" class="z-depth-1-half map-container" style="height: 100px">
+              <iframe src="https://maps.google.com/maps?q=manhatan&t=&z=13&ie=UTF8&iwloc=&output=embed" frameborder="0" style="border:0" allowfullscreen></iframe>
             </div>
+
+            <!-- Card content -->
+            <div class="card-body closed px-0">
+
+              <div class="button px-2 mt-3">
+                <a class="btn-floating btn-lg living-coral float-right"><i class="fas fa-bicycle"></i></a>
+              </div>
+
+              <div class="white px-4 pb-4 pt-3-5">
+
+                <!-- Title -->
+                <h5 class="card-title h5 living-coral-text">Central Park Zoo</h5>
+
+                <div class="d-flex justify-content-between living-coral-text">
+                  <h6 class="card-subtitle font-weight-light">A place to relax</h6>
+                  <h6 class="font-small font-weight-light mt-n1">25 min</h6>
+                </div>
+
+                <hr>
+
+                <div class="d-flex justify-content-between pt-2 mt-1 text-center text-uppercase living-coral-text">
+                  <div>
+                    <i class="fas fa-phone fa-lg mb-3"></i>
+                    <p class="mb-0">Call</p>
+                  </div>
+                  <div>
+                    <i class="fas fa-cat fa-lg mb-3"></i>
+                    <p class="mb-0">Love</p>
+                  </div>
+                  <div>
+                    <i class="far fa-grin-beam-sweat fa-lg mb-3"></i>
+                    <p class="mb-0">Smile</p>
+                  </div>
+                </div>
+
+                <hr>
+
+                <table class="table table-borderless">
+                  <tbody>
+                    <tr>
+                      <th scope="row" class="px-0 pb-3 pt-2">
+                        <i class="fas fa-map-marker-alt living-coral-text"></i>
+                      </th>
+                      <td class="pb-3 pt-2">East 64th Street, New York, NY 10021, US</td>
+                    </tr>
+                    <tr class="mt-2">
+                      <th scope="row" class="px-0 pb-3 pt-2">
+                        <i class="far fa-clock living-coral-text"></i>
+                      </th>
+                      <td class="pb-3 pt-2"><span class="deep-purple-text mr-2"> Closed</span> Opens 10 AM</td>
+                    </tr>
+                    <tr class="mt-2">
+                      <th scope="row" class="px-0 pb-3 pt-2">
+                        <i class="fas fa-cloud-moon living-coral-text"></i>
+                      </th>
+                      <td class="pb-3 pt-2">Sunny weather tomorrow</td>
+                    </tr>
+                  </tbody>
+                </table>
+
+              </div>
+
+            </div>
+
           </div>
+          <!-- Card -->
         </div>
         <div class="col-md-5 grid-margin stretch-card">
           <div class="card">
@@ -118,95 +191,6 @@ include_once "header.php" ?>
               <div id="total-sales-chart-legend"></div>
             </div>
             <canvas id="total-sales-chart"></canvas>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-12 stretch-card">
-          <div class="card">
-            <div class="card-body">
-              <p class="card-title">Recent Purchases</p>
-              <div class="table-responsive">
-                <table id="recent-purchases-listing" class="table">
-                  <thead>
-                    <tr>
-                      <th>Name</th>
-                      <th>Status report</th>
-                      <th>Office</th>
-                      <th>Price</th>
-                      <th>Date</th>
-                      <th>Gross amount</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>Jeremy Ortega</td>
-                      <td>Levelled up</td>
-                      <td>Catalinaborough</td>
-                      <td>$790</td>
-                      <td>06 Jan 2018</td>
-                      <td>$2274253</td>
-                    </tr>
-                    <tr>
-                      <td>Alvin Fisher</td>
-                      <td>Ui design completed</td>
-                      <td>East Mayra</td>
-                      <td>$23230</td>
-                      <td>18 Jul 2018</td>
-                      <td>$83127</td>
-                    </tr>
-                    <tr>
-                      <td>Emily Cunningham</td>
-                      <td>support</td>
-                      <td>Makennaton</td>
-                      <td>$939</td>
-                      <td>16 Jul 2018</td>
-                      <td>$29177</td>
-                    </tr>
-                    <tr>
-                      <td>Minnie Farmer</td>
-                      <td>support</td>
-                      <td>Agustinaborough</td>
-                      <td>$30</td>
-                      <td>30 Apr 2018</td>
-                      <td>$44617</td>
-                    </tr>
-                    <tr>
-                      <td>Betty Hunt</td>
-                      <td>Ui design not completed</td>
-                      <td>Lake Sandrafort</td>
-                      <td>$571</td>
-                      <td>25 Jun 2018</td>
-                      <td>$78952</td>
-                    </tr>
-                    <tr>
-                      <td>Myrtie Lambert</td>
-                      <td>Ui design completed</td>
-                      <td>Cassinbury</td>
-                      <td>$36</td>
-                      <td>05 Nov 2018</td>
-                      <td>$36422</td>
-                    </tr>
-                    <tr>
-                      <td>Jacob Kennedy</td>
-                      <td>New project</td>
-                      <td>Cletaborough</td>
-                      <td>$314</td>
-                      <td>12 Jul 2018</td>
-                      <td>$34167</td>
-                    </tr>
-                    <tr>
-                      <td>Ernest Wade</td>
-                      <td>Levelled up</td>
-                      <td>West Fidelmouth</td>
-                      <td>$484</td>
-                      <td>08 Sep 2018</td>
-                      <td>$50862</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
           </div>
         </div>
       </div>
