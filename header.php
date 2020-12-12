@@ -30,10 +30,10 @@ session_start();
   <link rel="stylesheet" href="css/style.css">
 
   <!-- endinject -->
-  <link rel="shortcut icon" href="images/favicon.png"/>
+  <link rel="shortcut icon" href="images/favicon.png" />
 
-  <link rel="stylesheet" href="css/mis_estilos.css"/>
-  
+  <link rel="stylesheet" href="css/mis_estilos.css" />
+
 
 </head>
 
@@ -78,7 +78,7 @@ session_start();
 
 
 
-    $fechayhora = date("d-m-Y");
+    $fechayhora = date("Y-m-d");
 
     ?>
 
@@ -101,7 +101,7 @@ session_start();
               <form name="form_reloj" class="mt-3">
 
                 <div class="input-group row">
-                  <input class="text-black form-control-plaintext input-lg negrita col-md-8" size="49" type="text" value="La Virginia, Risaralda / <?php echo $fechayhora.' -';?>">
+                  <input class="text-black form-control-plaintext input-lg negrita col-md-8" size="49" type="text" value="La Virginia, Risaralda / <?php echo $fechayhora . ' -'; ?>">
                   <input class="form-control text-black negrita mt-2 text-center col-md-4 mr-5" style="height: 10px; width: 1em;" type="text" id="reloj" readonly>
                 </div>
 
@@ -173,6 +173,7 @@ session_start();
                 <span class="menu-title">Clientes</span>
               </a>
             </li>
+
             <li class="nav-item">
               <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
                 <i class="fas fa-file-invoice-dollar menu-icon"></i>
@@ -183,7 +184,6 @@ session_start();
                 <ul class="nav flex-column sub-menu">
                   <li class="nav-item"> <a class="nav-link" href="factura.php"> Ver Facturas </a></li>
                   <li class="nav-item"> <a class="nav-link" href="nueva_factura.php"> Nueva Factura</a></li>
-
                 </ul>
               </div>
             </li>
@@ -194,12 +194,22 @@ session_start();
                 <span class="menu-title">Productos</span>
               </a>
             </li>
+
             <li class="nav-item">
               <a class="nav-link" href="proveedores.php">
                 <i class="fas fa-user-tie menu-icon"></i>
                 <span class="menu-title">Proveedores</span>
               </a>
             </li>
+
+
+            <!-- <li class="nav-item">
+              <a class="nav-link" href="gastos.php">
+                <i class="fas fa-dollar-sign menu-icon"></i>
+                <span class="menu-title">Gastos</span>
+              </a>
+            </li> -->
+
             <?php if ($estado1001 == 'Habilitado') { ?>
               <li class="nav-item">
                 <a class="nav-link" href="usuarios.php">
@@ -207,14 +217,16 @@ session_start();
                   <span class="menu-title">Usuarios</span>
                 </a>
               </li>
+            <?php } ?>
+
+            <?php if ($estado1001 == 'Habilitado') { ?>
               <li class="nav-item">
-                <a class="nav-link" href="documentation/documentation.html">
-                  <i class="mdi mdi-file-document-box-outline menu-icon"></i>
-                  <span class="menu-title">Documentation</span>
+                <a class="nav-link" href="reportes.php">
+                  <i class="fas fa-chart-bar menu-icon"></i>
+                  <span class="menu-title">Reportes</span>
                 </a>
               </li>
             <?php } ?>
-
           </ul>
         </nav>
         <!-- partial -->

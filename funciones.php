@@ -11,7 +11,7 @@
 		}elseif($tipo=='azul'){
 			$tipo='alert alert-info';
 		}
-		elseif($tipo=='amarrillo'){
+		elseif($tipo=='amarillo'){
 			$tipo='alert alert-warning';
 		}
 		return '<div class="'.$tipo.'" align="center">

@@ -1,6 +1,7 @@
   <!-- incluyendo el controlador de la factura -->
   <?php
 
+
   $tittle = "panaderia | nueva factura";
 
   include_once "header.php" ?>
@@ -21,7 +22,7 @@
                   <div class="row">
                     <div class="col-lg-12">
                       <div class="form-group">
-                        <a href="#" class="btn btn-primary btn_new_cliente"><i class="fas fa-user-plus"></i> Nuevo Cliente</a>
+                        <a href="#" class="btn btn-primary btn_new_cliente mt-5 ml-4"><i class="fas fa-user-plus"></i> Nuevo Cliente</a>
                       </div>
                       <div class="card border-0">
                         <div class="card-body">
@@ -127,12 +128,13 @@
                                 <th class="textright th">Subtotal</th>
                                 <th class="th" colspan="2">Acciones</th>
                               </tr>
-                              <tbody class="detalle_venta" id="detalle_venta">
 
+                              <tbody class="detalle_venta" id="detalle_venta">
 
                               </tbody>
                             </table>
                           </div>
+                          
                           <div class="table-responsive">
                             <table id="detalle_totales" class="table table-hover detalle_totales table_items">
                             </table>

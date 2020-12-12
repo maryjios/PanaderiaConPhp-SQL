@@ -21,8 +21,7 @@ function iniciar() {
   $("#generarFactura").click(generarFactu);
 
   $(".btnFacturaRegistrar").click(cerrarModal);
-  // cargar factura de usuario logeado
-  // cargar_items_factura();
+
 
 }
 
@@ -235,8 +234,6 @@ function agregar_fila(e) {
   var producto = $('#cod_producto').val();
   var cantidad = $('#txt_cant_producto').val();
 
-  var cantidad = $('#txt_cant_producto').val();
-
   var action = 'AgregarProductoDetalle';
 
   $.ajax({
@@ -434,43 +431,43 @@ function generarFactu(e) {
 
 
 
-    var items = $('#detalle_venta tr').length;
+  var items = $('#detalle_venta tr').length;
 
-    if (items > 0) {
+  if (items > 0) {
 
-      var action = "GenerarFactura";
+    var action = "GenerarFactura";
 
-      var cliente = $('#id_cliente').val();
+    var cliente = $('#id_cliente').val();
 
 
-      $.ajax({
+    $.ajax({
 
-        url: 'factura_controller.php',
-        type: "POST",
-        async: true,
-        data: {
+      url: 'factura_controller.php',
+      type: "POST",
+      async: true,
+      data: {
 
-          action: action,
-          cliente: cliente
+        action: action,
+        cliente: cliente
 
-        },
+      },
 
-        success: function (respuesta) {
+      success: function (respuesta) {
 
-          if (respuesta != "false") {
-            console.log(respuesta);
-            $("#modalFacturaExitosa").modal("show");
-            
-          }
+        if (respuesta != "false") {
+          console.log(respuesta);
+          $("#modalFacturaExitosa").modal("show");
 
         }
 
-      });
+      }
 
-    } 
+    });
+
+  }
 }
 
-function cerrarModal(){
+function cerrarModal() {
 
   location.reload();
 

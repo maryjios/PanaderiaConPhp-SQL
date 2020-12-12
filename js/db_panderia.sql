@@ -126,6 +126,15 @@ CREATE TABLE detalle_temp (
   precio_vent FLOAT(10,2) NOT NULL
 )
 
+CREATE TABLE tareas_temp (
+  id SMALLINT UNSIGNED AUTO_INCREMENT NOT NULL,
+  titulo VARCHAR(50) COLLATE utf8_spanish_ci NOT NULL,
+  descripcion VARCHAR(100) NULL,
+  usuario CHAR(10),
+  fecha DATETIME
+)
+
+
 
 DELIMITER //
 CREATE PROCEDURE detalle_factu_temp(cod_producto INT, cant INT, usuario VARCHAR(50))

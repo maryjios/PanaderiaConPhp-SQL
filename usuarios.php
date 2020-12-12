@@ -183,8 +183,8 @@ include_once "header.php" ?>
                           <td>
 
                             <div class="btn-group" role="group" aria-label="Basic example">
+                              <button type="button" class="btn btn-primary text-white" data-toggle="modal" data-target="#ver_usuario<?php echo $datos['id']; ?>" style="background: skyblue; border-color: skyblue;"><i class="fa fa-eye"></i></button>
                               <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editar_usuario<?php echo $datos['id']; ?>"><i class="fa fa-edit"></i></button>
-                              <button type="button" class="btn btn-primary bg-danger"><i class="fa fa-trash"></i></button>
                             </div>
 
                           </td>
@@ -195,7 +195,7 @@ include_once "header.php" ?>
                             <div class="modal-dialog" role="document">
                               <div class="modal-content">
                                 <div class="modal-header text-center">
-                                  <h5 class="modal-title" id="exampleModalLabel">Modificar Cliente</h5>
+                                  <h5 class="modal-title" id="exampleModalLabel">Modificar Usuario</h5>
                                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                   </button>
@@ -235,6 +235,57 @@ include_once "header.php" ?>
                                 <div class="modal-footer">
                                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                                   <input type="submit" class="btn btn-primary" value="Guardar">
+                                </div>
+                              </div>
+                            </div>
+                          </form>
+                        </div>
+
+                        <!-- Modal ver usuario -->
+                        <div class="modal fade" id="ver_usuario<?php echo $datos['id']; ?>" tabindex="-1" role="dialog" aria-labelledby="editar_producto" aria-hidden="true">
+                          <form action="" method="POST">
+                            <div class="modal-dialog" role="document">
+                              <div class="modal-content">
+                                <div class="modal-header text-center">
+                                  <h5 class="modal-title" id="exampleModalLabel">Ver Usuario</h5>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                </div>
+                                <div class="modal-body">
+
+                                  <div class="form-group">
+                                    <label for="id" class="form-control-label mb-1">Id:</label>
+                                    <input name="id_edit" type="number" class="form-control" aria-required="true" aria-invalid="false" readonly value="<?php echo $datos['id']; ?>">
+                                  </div>
+
+                                  <div class="form-group">
+                                    <label for="nombre" class="form-control-label mb-1">Nombre:</label>
+                                    <input name="nombre_edit" type="text" class="form-control" readonly value="<?php echo $datos['nombre']; ?>">
+                                  </div>
+
+                                  <div class="form-group">
+                                    <label for="apellido" class="form-control-label mb-1">Apellido:</label>
+                                    <input name="apellido_edit" type="text" class="form-control" readonly aria-invalid="false" value="<?php echo $datos['apellido']; ?>">
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="direccion" class="form-control-label mb-1">Direccion:</label>
+                                    <input type="text" name="direccion_edit" readonly class="form-control" aria-required="true" aria-invalid="false" value="<?php echo $datos['direccion']; ?>">
+                                  </div>
+
+                                  <div class="form-group">
+                                    <label for="telefono" class="form-control-label mb-1">Telefono:</label>
+                                    <input type="text" name="telefono_edit" readonly class="form-control" aria-required="true" aria-invalid="false" value="<?php echo $datos['telefono']; ?>">
+                                  </div>
+
+                                  <div class="form-group">
+                                    <label for="correo" class="form-control-label mb-1">Tipo:</label>
+                                    <input type="text" name="correo_edit" readonly class="form-control" aria-required="true" aria-invalid="false" value="<?php echo $datos['tipo']; ?>">
+                                  </div>
+
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                                 </div>
                               </div>
                             </div>

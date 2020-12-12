@@ -31,15 +31,13 @@ include_once "header.php" ?>
                                         $id = ($_POST["id_edit"]);
                                         $nombre = ($_POST["nombre_edit"]);
                                         $telefono = ($_POST["telefono_edit"]);
-                                        $direccion = ($_POST["direccion_edit"]);
                                         $correo = ($_POST["correo_edit"]);
 
 
-                                        $sql = $base_de_datos->prepare("UPDATE cliente SET nombre = :nom, telefono = :tel, direccion = :direc, correo = :email WHERE id = :id ");
+                                        $sql = $base_de_datos->prepare("UPDATE proveedor SET nombre = :nom, telefono = :tel, correo = :email WHERE id = :id ");
 
                                         $sql->bindParam(':nom', $nombre);
                                         $sql->bindParam(':tel', $telefono);
-                                        $sql->bindParam(':direc', $direccion);
                                         $sql->bindParam(':email', $correo);
                                         $sql->bindParam(':id', $id);
 

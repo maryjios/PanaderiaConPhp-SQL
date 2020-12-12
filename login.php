@@ -1,52 +1,64 @@
-
 <?php
- require_once "Conexion.php"; 
- include_once "funciones.php";
+require_once "Conexion.php";
+include_once "funciones.php";
 
 session_start();
 if (isset($_SESSION["user_name"])) {
-    header("Location: inicio.php");
+  header("Location: inicio.php");
 }
 
 ?>
 
-<?php 
+<?php
 
-if(!empty($_POST['usuario']) && !empty($_POST['contrasena'])){ 
+if (!empty($_POST['usuario']) && !empty($_POST['contrasena'])) {
 
-    $usu = $_POST['usuario'];
-    $con = $_POST['contrasena'];
+  $usu = $_POST['usuario'];
+  $con = $_POST['contrasena'];
 
-    $sql = $base_de_datos->query("SELECT usuario.nombre AS nombre_usu, usuario.apellido AS apellido_usu, usuario.usuario AS usuario_usu, usuario.contrasena AS contrasena,  usuario.id AS id_usu ,  tipo_user.nombre AS tipo, tipo_user.id AS id_tipo FROM usuario JOIN tipo_user ON usuario.tipo_usuario = tipo_user.id  WHERE usuario.usuario ='$usu'"); 
+  $sql = $base_de_datos->query("SELECT usuario.nombre AS nombre_usu, usuario.apellido AS apellido_usu, usuario.estado AS estado_u, usuario.usuario AS usuario_usu, usuario.contrasena AS contrasena, usuario.id AS id_usu,  tipo_user.nombre AS tipo, tipo_user.id AS id_tipo FROM usuario JOIN tipo_user ON usuario.tipo_usuario = tipo_user.id  WHERE usuario.usuario ='$usu'");
 
-    $contador = 0;
+  $contador = 0;
 
-    while($row = $sql->fetch()){
+  if ($sql) {
+    while ($row = $sql->fetch()) {
+
+      if ($row['estado_u'] == 'activo') {
 
 
-        if (password_verify($con, $row['contrasena']) ){
-            $mensaje = " "; 
-            $contador++;
-            $_SESSION['id'] = $row['id_usu'];
-            $_SESSION['tipo_u'] = $row['tipo'];
-            $_SESSION['user_name'] = $row['usuario_usu'];
-            $_SESSION['nombre_u'] = $row['nombre_usu'];
-            $_SESSION['apellido_u'] = $row['apellido_usu'];
+        if (password_verify($con, $row['contrasena'])) {
+          $mensaje = " ";
+          $contador = 1;
+          $_SESSION['id'] = $row['id_usu'];
+          $_SESSION['tipo_u'] = $row['tipo'];
+          $_SESSION['user_name'] = $row['usuario_usu'];
+          $_SESSION['nombre_u'] = $row['nombre_usu'];
+          $_SESSION['apellido_u'] = $row['apellido_usu'];
+        } else {
 
+          $contador = 3;
         }
+      } else {
 
+        $contador = 2;
+      }
     }
+  }
 
-    if ($contador>0) {
 
-        header("Location: inicio.php");
+  if ($contador == 1) {
 
-    }else{
+    header("Location: inicio.php");
+  } elseif ($contador == 2) {
 
-        $mensaje =  mensajes('Usuario o Contraseña Incorrecto<br>','rojo');
+    $mensaje =  mensajes('Usuario Inactivo <br>', 'amarillo');
+  } elseif ($contador == 3) {
 
-    }
+    $mensaje =  mensajes('Usuario o Contraseña Incorrecto <br>', 'rojo');
+  } elseif ($contador == 4) {
 
+    $mensaje =  mensajes('Usuario no encontrado<br>', 'rojo');
+  }
 } ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -68,6 +80,7 @@ if(!empty($_POST['usuario']) && !empty($_POST['contrasena'])){
   <!-- endinject -->
   <link rel="shortcut icon" href="images/favicon.png" />
 </head>
+
 <body>
 
 
@@ -101,14 +114,14 @@ if(!empty($_POST['usuario']) && !empty($_POST['contrasena'])){
                   </div>
                 </div>
                 <div class="form-group">
-                  <?php if (!empty($mensaje)): 
+                  <?php if (!empty($mensaje)) :
                     echo $mensaje;
 
-                   endif ?>
-                <div class="mt-3" align="center">
-                  <input type="submit" class="btn btn-primary btn-lg"  value="Ingresar" id="btnLogin"/> 
-                </div>
-               
+                  endif ?>
+                  <div class="mt-3" align="center">
+                    <input type="submit" class="btn btn-primary btn-lg" value="Ingresar" id="btnLogin" />
+                  </div>
+
                 </div>
               </form>
             </div>
@@ -142,4 +155,3 @@ if(!empty($_POST['usuario']) && !empty($_POST['contrasena'])){
 </body>
 
 </html>
-

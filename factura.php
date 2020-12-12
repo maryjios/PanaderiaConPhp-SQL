@@ -30,7 +30,7 @@ if ($estado1005 == 'Habilitado') { ?>
                   <tbody>
                     <?php
                     // Consultar Clientes
-                    $consulta = $base_de_datos->query("SELECT factura.codigo as codigo, cliente.nombre as cliente, usuario.nombre AS vendedor_nom, usuario.apellido AS vendedor_ape, factura.fecha AS fecha, factura.total AS total, factura.estado_factura AS estado FROM factura JOIN cliente ON factura.id_cliente = cliente.id JOIN usuario ON factura.id_vendedor = usuario.id");
+                    $consulta = $base_de_datos->query("SELECT factura.codigo as codigo, cliente.nombre as cliente, cliente.telefono as tel_c, cliente.direccion as direc_c, usuario.nombre AS vendedor_nom, usuario.apellido AS vendedor_ape, factura.fecha AS fecha, factura.total AS total, factura.estado_factura AS estado FROM factura JOIN cliente ON factura.id_cliente = cliente.id JOIN usuario ON factura.id_vendedor = usuario.id");
 
                     while ($datos = $consulta->fetch()) {
 
@@ -40,6 +40,9 @@ if ($estado1005 == 'Habilitado') { ?>
                       $fecha = $datos['fecha'];
                       $total = $datos['total'];
                       $estado = $datos['estado'];
+                      $telefono_c = $datos['tel_c'];
+                      $direccion_c = $datos['direc_c'];
+
 
 
                     ?>
@@ -75,7 +78,7 @@ if ($estado1005 == 'Habilitado') { ?>
                                 </button>
 
 
-                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editar_permiso<?php echo $datos['codigo']; ?>">
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editar_factura<?php echo $datos['codigo']; ?>">
                                   <i class="fa fa-edit"></i>
                                 </button>
 
@@ -86,12 +89,12 @@ if ($estado1005 == 'Habilitado') { ?>
                       </tr>
 
                       <!-- Modal editar permisos -->
-                      <div class="modal fade" id="editar_permiso<?php echo $datos['codigo']; ?>" tabindex="-1" role="dialog" aria-labelledby="editar_producto" aria-hidden="true">
+                      <div class="modal fade" id="editar_factura<?php echo $datos['codigo']; ?>" tabindex="-1" role="dialog" aria-labelledby="editar_producto" aria-hidden="true">
                         <form action="" method="POST">
                           <div class="modal-dialog" role="document">
                             <div class="modal-content">
                               <div class="modal-header text-center">
-                                <h5 class="modal-title" id="exampleModalLabel">Modificar Cliente</h5>
+                                <h5 class="modal-title" id="exampleModalLabel">Modificar Factura</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                   <span aria-hidden="true">&times;</span>
                                 </button>
@@ -123,29 +126,88 @@ if ($estado1005 == 'Habilitado') { ?>
                         </form>
                       </div>
 
-                      <div class="modal fade bd-example-modal-lg" id="ver_factura<?php echo $codigo ?>" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-lg">
-                          <div class="modal-content">
-                            <input type="hidden" name="permiso_edit" value="<?php echo $codigo ?>">
-                            <?php
+                      <!-- Modal editar usuario -->
+                      <div class="modal fade" id="ver_factura<?php echo $datos['codigo']; ?>" tabindex="-1" role="dialog" aria-labelledby="editar_producto" aria-hidden="true">
+                        <form action="" method="POST">
+                          <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                              <div class="modal-header text-center">
+                                <h5 class="modal-title" id="exampleModalLabel">Factura De Venta</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                              <div class="modal-body">
 
-                            $query_items = $base_de_datos->query("SELECT * FROM item_factura WHERE cod_factura = '$codigo' ");
+                                <div align="right">
+                                  <div class="col-lg-2">
+                                    <div class="form-group">
+                                      <label>Num. Factura</label>
+                                      <input type="number" name="id_cliente" id="id_cliente" class="form-control-plaintext form-control-sm el_cliente" value="<?php echo $codigo ?>">
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="row">
+                                  <div class="col-lg-3">
+                                    <div class="form-group">
+                                      <label>Cliente</label>
+                                      <input type="text" name="nom_cliente" id="nom_cliente" class="form-control form-control-sm el_cliente" disabled required value="<?php echo $cliente ?>">
+                                    </div>
+                                  </div>
 
-                            ?>
-                            <select name="estado_edit" class="custom-select" data-style="btn btn-info">
-                              <option value="<?php echo $estado ?>" selected><?php echo $estado ?></option>
-                              <?php if ($estado == "Activa") { ?>
+                                  <div class="col-lg-2">
+                                    <div class="form-group">
+                                      <label>Teléfono</label>
+                                      <input type="number" name="tel_cliente" id="tel_cliente" class="form-control form-control-sm el_cliente" disabled value="<?php echo $telefono_c ?>">
+                                    </div>
+                                  </div>
+                                  <div class="col-lg-2">
+                                    <div class="form-group">
+                                      <label>Dirrección</label>
+                                      <input type="text" name="dir_cliente" id="dir_cliente" class="form-control form-control-sm el_cliente" disabled required value="<?php echo $direccion_c ?>">
+                                    </div>
+                                  </div>
 
-                                <option value="Inactiva">Inactiva</option>
 
-                              <?php } else { ?>
+                                  <!-- <table class="table">
+                                    <thead>
+                                      <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">First</th>
+                                        <th scope="col">Last</th>
+                                        <th scope="col">Handle</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr>
+                                        <th scope="row">1</th>
+                                        <td>Mark</td>
+                                        <td>Otto</td>
+                                        <td>@mdo</td>
+                                      </tr>
+                                      <tr>
+                                        <th scope="row">2</th>
+                                        <td>Jacob</td>
+                                        <td>Thornton</td>
+                                        <td>@fat</td>
+                                      </tr>
+                                      <tr>
+                                        <th scope="row">3</th>
+                                        <td>Larry</td>
+                                        <td>the Bird</td>
+                                        <td>@twitter</td>
+                                      </tr>
+                                    </tbody>
+                                  </table> -->
 
-                                <option value="Activa">Activa</option>
-
-                              <?php } ?>
-                            </select>
-                          </div>
-                        </div>
+                                </div> 
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                  <input type="submit" class="btn btn-primary" value="Guardar">
+                                </div>
+                              </div>
+                            </div>
+                        </form>
                       </div>
                     <?php } ?>
                   </tbody>
@@ -160,58 +222,6 @@ if ($estado1005 == 'Habilitado') { ?>
     <!-- content-wrapper ends -->
   </div>
 
-
-  <!-- Modal registrar nuevo cliente -->
-  <div class="modal" id="nuevo_cliente" tabindex="-1" role="dialog">
-    <form action="" method="POST">
-
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Registrar Cliente</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <div class="form-group">
-              <label for="id" class="form-control-label mb-1">Identificacion:</label>
-              <input id="id" name="id" type="number" class="form-control" aria-required="true" aria-invalid="false">
-            </div>
-
-            <div class="form-group">
-              <label for="nombre" class="form-control-label mb-1">Nombre:</label>
-              <input id="nombre" name="nombre" type="text" class="form-control" aria-required="true" aria-invalid="false">
-            </div>
-
-            <div class="form-group">
-              <label for="apellido" class="form-control-label mb-1">Apellido</label>
-              <input id="apellido" name="apellido" type="text" class="form-control" aria-required="true" aria-invalid="false">
-            </div>
-
-            <div class="form-group">
-              <label for="telefono" class="form-control-label mb-1">Telefono:</label>
-              <input id="telefono" name="telefono" type="number" class="form-control" aria-required="true" aria-invalid="false">
-            </div>
-
-            <div class="form-group">
-              <label for="direccion" class="form-control-label mb-1">Dirección:</label>
-              <input id="direccion" name="direccion" type="text" class="form-control" aria-required="true" aria-invalid="false">
-            </div>
-
-            <div class="form-group">
-              <label for="correo" class="form-control-label mb-1">Correo Electronico:</label>
-              <input id="correo" name="correo" type="email" class="form-control" aria-required="true" aria-invalid="false">
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-            <input class="btn btn-primary" type="submit" value="Guardar" name="nuevo_cliente">
-          </div>
-        </div>
-      </div>
-    </form>
-  </div>
 
   <?php include_once "footer.php"; ?>
 
