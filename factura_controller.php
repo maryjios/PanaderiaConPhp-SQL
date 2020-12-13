@@ -59,7 +59,6 @@ if (!empty($_POST)) {
     echo $mensaje;
   }
 
-
   if ($_POST['action'] == 'DatosProducto') {
 
     if (!empty($_POST['producto'])) {
@@ -85,7 +84,7 @@ if (!empty($_POST)) {
     exit();
   }
 
-  // agregar producto a detalle temporal
+  // agregar producto a detalle temporals
   if ($_POST['action'] == 'AgregarProductoDetalle') {
     if (empty($_POST['producto']) || empty($_POST['cantidad'])) {
 
