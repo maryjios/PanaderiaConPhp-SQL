@@ -94,7 +94,8 @@ if (!empty($_POST)) {
       $cod = $_POST['producto'];
       $cantidad = $_POST['cantidad'];
 
-      $vendedor = $_SESSION['id'];
+      $vendedor = '1001';
+
 
   
       $sentencias = $base_de_datos->query("SELECT id FROM producto WHERE id = '$cod' OR nombre LIKE '%' '$cod' '%';");
@@ -103,7 +104,7 @@ if (!empty($_POST)) {
 
       $codigo = $result2["id"];
 
-      $query_detalle_temp = $base_de_datos->query("CALL add_detalle_temp ($codigo, $cantidad,'$vendedor')");
+      $query_detalle_temp = $base_de_datos->query("CALL detalle_factu_temp ($codigo, $cantidad,'$vendedor')");
 
       $detalleTabla = '';
       $total = 0;
@@ -131,7 +132,7 @@ if (!empty($_POST)) {
 
       $itemTemp = $_POST['item'];
 
-      $vendedor = $_SESSION['id'];
+      $vendedor;
 
       $sql_deletexquery = $base_de_datos->query("CALL eliminar_item_detalle ($itemTemp, '$vendedor')");
 
@@ -159,9 +160,9 @@ if (!empty($_POST)) {
 
       $cliente = $_POST['cliente'];
 
-      $vendedor = $_SESSION['id'];
+      $vendedor = 1001;
 
-      $vendedor = $_SESSION['id'];
+      $vendedor = 1001;
 
       // mensaje ajax
       $mensaje = "";

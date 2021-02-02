@@ -23,7 +23,7 @@ if (!empty($_POST['usuario']) && !empty($_POST['contrasena'])) {
   if ($sql) {
     while ($row = $sql->fetch()) {
 
-      if ($row['estado_u'] == 'activo') {
+      if ($row['estado_u'] == '1') {
 
 
         if (password_verify($con, $row['contrasena'])) {

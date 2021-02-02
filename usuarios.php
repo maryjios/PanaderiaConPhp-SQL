@@ -51,15 +51,15 @@ include_once "header.php" ?>
                       $tipo = $_POST['tipo'];
 
 
-                      $consulta_tipo = $base_de_datos->query("SELECT id FROM tipo_user WHERE usuario = '$usuario' ");
+                      $consulta_tipo = $base_de_datos->query("SELECT id FROM tipo_user");
 
                       while ($array_id = $consulta_tipo->fetch()) {
                         $el_tipo = $array_id['id'];
                       }
 
 
-                      $habilitado = "Habilitado";
-                      $inhabilitado = "Inhabilitado";
+                      $habilitado = "1";
+                      $inhabilitado = "2";
 
 
                       $sql = $base_de_datos->query("SELECT * FROM usuario WHERE id = '$id' ");

@@ -265,13 +265,13 @@ function agregar_fila(e) {
           datos += '<td class="codProducto">' + resultado[i].codproducto + '</td>';
           datos += '<td class="nomProducto">' + resultado[i].nombre + '</td>';
           datos += '<td class="cantidadProducto">' + resultado[i].cantidad + '</td>';
-          datos += '<td class="precio_ventaProducto">' + resultado[i].precio_venta + '</td>';
-          datos += '<td>' + resultado[i].precio_venta * resultado[i].cantidad + '</td>';
+          datos += '<td class="precio_ventaProducto">' + resultado[i].precio_vent + '</td>';
+          datos += '<td>' + resultado[i].precio_vent * resultado[i].cantidad + '</td>';
           datos += "<td><button type='button' class='btn btn-danger btn-sm eliminar'><i class='mdi mdi-delete'></i></button></td>";
           datos += '<input type="hidden" class="idItemDetalle">' + resultado[i].correlativo + '</td>';
           datos += '</tr>';
 
-          acum += resultado[i].precio_venta * resultado[i].cantidad;
+          acum += resultado[i].precio_vent * resultado[i].cantidad;
 
 
         }
@@ -371,13 +371,13 @@ function eliminarItem(e) {
           datos += '<td class="codProducto">' + resultado[i].codproducto + '</td>';
           datos += '<td class="nomProducto">' + resultado[i].nombre + '</td>';
           datos += '<td class="cantidadProducto">' + resultado[i].cantidad + '</td>';
-          datos += '<td class="precio_ventaProducto">' + resultado[i].precio_venta + '</td>';
-          datos += '<td>' + resultado[i].precio_venta * resultado[i].cantidad + '</td>';
+          datos += '<td class="precio_ventaProducto">' + resultado[i].precio_vent + '</td>';
+          datos += '<td>' + resultado[i].precio_vent * resultado[i].cantidad + '</td>';
           datos += "<td><button type='button' class='btn btn-danger btn-sm eliminar'><i class='mdi mdi-delete'></i></button></td>";
           datos += '<input type="hidden" class="idItemDetalle">' + resultado[i].correlativo + '</td>';
           datos += '</tr>';
 
-          acum += resultado[i].precio_venta * resultado[i].cantidad;
+          acum += resultado[i].precio_vent * resultado[i].cantidad;
 
 
         }
@@ -419,6 +419,7 @@ function eliminarItem(e) {
 
       $(".eliminar").click(eliminarItem);
 
+    
     }
   });
 

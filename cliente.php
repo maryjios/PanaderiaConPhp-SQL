@@ -73,7 +73,6 @@ include_once "header.php" ?>
 
                   $id = $_POST['id'];
                   $nombre = $_POST['nombre'];
-                  $apellido = $_POST['apellido'];
                   $telefono = $_POST['telefono'];
                   $direccion = $_POST['direccion'];
                   $correo = $_POST['correo'];

@@ -3,7 +3,7 @@
 $tittle = "panaderia | permisos";
 
 include_once "header.php";
-if ($estado1005 == 'Habilitado') { ?>
+if ($estado1005 == '1') { ?>
 
   <div class="main-panel">
     <div class="content-wrapper">
